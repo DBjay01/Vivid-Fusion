@@ -5,7 +5,7 @@
 // // Replace with your Gemini API credentials
 // const client = new LanguageServiceClient({
 //   credentials: {
-// //    key:"AIzaSyD-szHNZf8_imlHGLGnPUy2icjNirHO84c"
+// //   
 //     // ... your Gemini API credentials
 //   },
 // });
