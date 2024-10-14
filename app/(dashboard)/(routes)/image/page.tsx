@@ -1,75 +1,64 @@
-"use client" ;
+"use client";
 
-import { LanguageServiceClient } from '@google-cloud/language';
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { ImageIcon, MessageSquare, Music } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-//import type { ChatCompletionRequestMessage } from "openai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-
 import { Heading } from "@/components/heading";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { cn } from "@/lib/utils";
-import { formSchema } from "./constants";
+import { formSchema } from "./constants"; // Ensure the formSchema is imported or defined accordingly
 
+const ImagePage = () => {
+  const router = useRouter();
+  const [images, setImages] = useState<string[]>([]);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      prompt: "",
+    },
+  });
 
+  const isLoading = form.formState.isSubmitting;
 
-const MusicPage = () => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setImages([]);
 
-    const router = useRouter();
-    const [music, setMusic] = useState<string>();
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-         prompt: "",
-        }
-      });
+      const response = await axios.post("/api/getimages", values);
 
-      const isLoading = form.formState.isSubmitting;
-      
-      const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-          setMusic(undefined);
-    
-          const response = await axios.post("/api/music", values);
-    
-          setMusic(response.data.audio);
-          form.reset();
-        } catch (error: any) {
-         // if (axios.isAxiosError(error) && error?.response?.status === 403)
-         // else toast.error("Something went wrong.");
-    
-          console.error(error);
-        } finally {
-          router.refresh();
-        }
-      };
+      setImages(response.data.images);
+      form.reset();
+    } catch (error: any) {
+      console.error("Something went wrong while generating images", error);
+    } finally {
+      router.refresh();
+    }
+  };
 
-    return(
+  return (
     <div>
-    <Heading
+      <Heading
         title="Image Generation"
-        description="generate image of your will"
+        description="Turn your prompt into images"
         icon={ImageIcon}
-        iconColor="text-pink-500"
-        bgColor="bg-pink-500/10"
-    />
-        <div className="px-4 lg:px-8">
+        iconColor="text-blue-500"
+        bgColor="bg-blue-500/10"
+      />
+      <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2"
             >
-                <FormField
+              <FormField
                 name="prompt"
                 render={({ field }) => (
                   <FormItem className="col-span-12 lg:col-span-10">
@@ -77,7 +66,7 @@ const MusicPage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="Piano solo"
+                        placeholder="Enter your image prompt"
                         {...field}
                       />
                     </FormControl>
@@ -85,36 +74,34 @@ const MusicPage = () => {
                 )}
               />
 
-                <Button
-                className="col-span-12 lg:col-span-2 w-full"
-                disabled={isLoading}
-              >
+              <Button className="col-span-12 lg:col-span-2 w-full" disabled={isLoading}>
                 Generate
               </Button>
             </form>
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-
-        <div className="flex flex-col-reverse gap-y-4">
-        {isLoading && (
+          {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
-              {/* <Loader /> */}
+              Loading...
             </div>
           )}
-          {!music && !isLoading }
-
-          {music && (
-            <audio controls className="w-full mt-8">
-              <source src={music} />
-            </audio>
+          {!isLoading && images.length === 0 && (
+            <div className="text-center">No images found. Try another prompt!</div>
           )}
-          </div>
+          {images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {images.map((src, index) => (
+                <a key={index} href={src} target="_blank" rel="noopener noreferrer">
+                  <img src={src} alt="Generated Image" className="rounded-lg shadow-md cursor-pointer" />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
-
+      </div>
     </div>
-    </div>
-    );
-}
+  );
+};
 
-export default MusicPage;
+export default ImagePage;
