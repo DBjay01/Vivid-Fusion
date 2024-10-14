@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-const PEXELS_API_KEY = "YJQqOrKJMu72PYqRzYKwC8QGFhfDxQBPVk5NBLDBAf00eg3mbIy749DO"; // Replace with your Pexels API key
+const PEXELS_API_KEY = "Your_API_KEY"; // Replace with your Pexels API key
 
 export async function POST(req: Request) {
   try {
