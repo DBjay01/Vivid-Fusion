@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CodeIcon, ImageIcon, MessagesSquare, MusicIcon, VideoIcon } from "lucide-react";
+import { ArrowRight, CodeIcon, ImageIcon, MessagesSquare, MusicIcon, Text, VideoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -20,6 +20,13 @@ const TOOLS = [
       href: "/image",
       color: "text-pink-700",
       bgcolor: "bg-pink-700/10"
+  },
+  {
+    label: "Image Modification",
+    icon: Text,
+    href: "https://imaginify-beta-indol.vercel.app",
+    color: "text-pink-700",
+    bgcolor: "bg-pink-700/10"
   },
   {
       label: "Video Generation",

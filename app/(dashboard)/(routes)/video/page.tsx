@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Heading } from "@/components/heading"; // Assuming you have a Heading component similar to the music page
 import { Button } from "@/components/ui/button"; // Assuming you have a Button component
 import { Input } from "@/components/ui/input"; // Assuming you have an Input component
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, VideoIcon } from "lucide-react";
 
 // Define an interface for the video structure
 interface VideoFile {
@@ -34,7 +34,7 @@ export default function VideoSearch() {
       <Heading
         title="Generate Videos"
         description="Turn your prompt into videos"
-        icon={MessageSquare} // Use a relevant icon
+        icon={VideoIcon} // Use a relevant icon
         iconColor="text-blue-500" // Change color as needed
         bgColor="bg-blue-500/10" // Change background color as needed
       />

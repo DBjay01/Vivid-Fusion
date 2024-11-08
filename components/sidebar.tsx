@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CodeIcon, ImageIcon, LayoutDashboard, MessagesSquare, MusicIcon, Settings, VideoIcon } from "lucide-react";
+import { CodeIcon, ImageIcon, LayoutDashboard, MessagesSquare, MusicIcon, Settings, Text, VideoIcon } from "lucide-react";
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +31,12 @@ const ROUTES = [{
         icon: ImageIcon,
         href: "/image",
         color: "text-pink-700",
+    },
+    {
+      label: "Image Modification",
+      icon: Text,
+      href: "https://imaginify-beta-indol.vercel.app",
+      color: "text-pink-700",
     },
     {
         label: "Video Generation",
